@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>TAP BPM</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Tap for BPM</h1>
+    <label for="typeInput">Type here for BPM</label>
+    <input type="text" id="typeInput" name="typeInput" value="" />
+    <button id="clear">Clear</button>
+    <div class="dataTable">
+      <div class="datumBox">
+        <h2>Taps</h2>
+        <p id="taps"></p>
+      </div>
+      <div class="datumBox">
+        <h2>Tail 1</h2>
+        <p id="lastTap"></p>
+      </div>
+      <div class="datumBox">
+        <h2>Tail 4</h2>
+        <p id="tail4"></p>
+      </div>
+      <div class="datumBox">
+        <h2>Tail 8</h2>
+        <p id="tail8"></p>
+      </div>
+      <div class="datumBox">
+        <h2>Tail 16</h2>
+        <p id="tail16"></p>
+      </div>
+      <div class="datumBox">
+        <h2>Tail 32</h2>
+        <p id="tail32"></p>
+      </div>
+    </div>
+    <p>Resets after 30s of no input</p>
+    <script src="script.js"></script>
+  </body>
+</html>

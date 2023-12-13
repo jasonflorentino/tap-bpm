@@ -1,0 +1,19 @@
+h2,
+p {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1rem;
+}
+
+.dataTable {
+  display: flex;
+  gap: 0.25rem;
+  margin: 1rem 0 1rem 0;
+}
+
+.datumBox:not(:last-child) {
+  padding: 0 0.25rem 0 0;
+  border-right: 1px solid #eee;
+}
