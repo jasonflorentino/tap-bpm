@@ -3,8 +3,33 @@ p {
   margin: 0;
 }
 
+body,
+h1,
+h2,
+p,
+input,
+button {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
 h2 {
   font-size: 1rem;
+}
+
+.userInputBox {
+  margin-bottom: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  width: clamp(16rem, 100%, 20rem);
+}
+
+.userInputBox input,
+button {
+  padding: 0.25rem;
 }
 
 .dataTable {
@@ -13,7 +38,25 @@ h2 {
   margin: 1rem 0 1rem 0;
 }
 
+.datumBox {
+  width: clamp(3rem, 100%, 6rem);
+  padding: 0 0.25rem 0 0.25rem;
+}
+
 .datumBox:not(:last-child) {
-  padding: 0 0.25rem 0 0;
   border-right: 1px solid #eee;
+}
+
+.visuallyHidden {
+  opacity: 0;
+  height: 1px;
+  width: 1px;
+  pointer-events: none;
+  position: absolute;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

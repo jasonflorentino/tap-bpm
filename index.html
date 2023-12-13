@@ -12,34 +12,43 @@
   </head>
   <body>
     <h1>Tap for BPM</h1>
-    <label for="typeInput">Type here for BPM</label>
-    <input type="text" id="typeInput" name="typeInput" value="" />
-    <button id="clear">Clear</button>
+
     <div class="dataTable">
       <div class="datumBox">
         <h2>Taps</h2>
-        <p id="taps"></p>
+        <p id="taps">0</p>
       </div>
       <div class="datumBox">
-        <h2>Tail 1</h2>
+        <h2>01</h2>
         <p id="lastTap"></p>
       </div>
       <div class="datumBox">
-        <h2>Tail 4</h2>
+        <h2>04</h2>
         <p id="tail4"></p>
       </div>
       <div class="datumBox">
-        <h2>Tail 8</h2>
+        <h2>08</h2>
         <p id="tail8"></p>
       </div>
       <div class="datumBox">
-        <h2>Tail 16</h2>
+        <h2>16</h2>
         <p id="tail16"></p>
       </div>
       <div class="datumBox">
-        <h2>Tail 32</h2>
+        <h2>32</h2>
         <p id="tail32"></p>
       </div>
+    </div>
+    <div class="userInputBox">
+      <label for="typeInput" class="visuallyHidden">Type here for BPM</label>
+      <input
+        type="text"
+        id="typeInput"
+        name="typeInput"
+        value=""
+        placeholder="Type here for BPM"
+      />
+      <button id="clear">Clear</button>
     </div>
     <p>Resets after 30s of no input</p>
     <script src="script.js"></script>

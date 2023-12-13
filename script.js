@@ -1,5 +1,5 @@
 const inputEl = document.getElementById("typeInput");
-const tapsEl = document.getElementById("taps");
+const countEl = document.getElementById("taps");
 const lastTapEl = document.getElementById("lastTap");
 const tail4El = document.getElementById("tail4");
 const tail8El = document.getElementById("tail8");
@@ -8,7 +8,7 @@ const tail32El = document.getElementById("tail32");
 const clearEl = document.getElementById("clear");
 
 let prev = 0;
-let tap = 0;
+let curr = 0;
 let count = 0;
 let average = 0;
 
@@ -39,16 +39,16 @@ const tails = {
 
 inputEl.addEventListener("input", (e) => {
   e.preventDefault();
-  if (prev === 0 || count === 0) prev = tap = Date.now();
-  prev = tap;
-  tap = Date.now();
+  if (prev === 0 || count === 0) prev = curr = Date.now();
+  prev = curr;
+  curr = Date.now();
   count++;
   if (count === 1) {
     return;
   } else {
-    lastTapEl.innerText = round(toBpm(tap - prev));
-    tapsEl.innerText = count;
-    updateTails(tap - prev);
+    lastTapEl.innerText = round(toBpm(curr - prev));
+    countEl.innerText = count;
+    updateTails(curr - prev);
   }
   inputEl.value = "";
   timerReset();
@@ -60,12 +60,10 @@ clearEl.addEventListener("click", init);
 
 function init() {
   prev = 0;
-  tap = 0;
+  curr = 0;
   count = 0;
-  average = 0;
-  i = 0;
-  lastTapEl.innerText = "0";
-  tapsEl.innerText = "0";
+  countEl.innerText = "0";
+  lastTapEl.innerText = "";
   resetTails();
 }
 
