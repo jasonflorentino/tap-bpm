@@ -64,6 +64,7 @@ button {
   border: 1px solid var(--color-button);
   background-color: var(--color-button);
   font-size: 1rem;
+  color: var(--color-bg);
 }
 
 .userInputBox {
