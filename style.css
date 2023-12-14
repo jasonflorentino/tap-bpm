@@ -1,6 +1,34 @@
+/* reset */
+
+body,
+h1,
 h2,
 p {
   margin: 0;
+}
+
+/* global */
+
+:root {
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-400: #4ade80;
+
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --color-bg: var(--gray-900);
+  --color-bg-accent: var(--gray-700);
+  --color-bg-input: var(--gray-700);
+  --color-border: var(--gray-600);
+  --color-text: var(--green-100);
+  --color-heading: var(--green-400);
+  --color-button: var(--green-400);
+
+  --border: 1px solid var(--color-border);
+  --border-radius: 0.25rem;
 }
 
 body,
@@ -13,23 +41,48 @@ button {
     "Liberation Mono", "Courier New", monospace;
 }
 
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  padding: 1rem;
+}
+
+h1,
 h2 {
+  color: var(--color-heading);
+}
+
+input {
+  background-color: var(--color-bg-input);
+  border: var(--border);
+  border-radius: var(--border-radius);
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+button {
+  border: 1px solid var(--color-button);
+  background-color: var(--color-button);
   font-size: 1rem;
 }
 
 .userInputBox {
   margin-bottom: 1rem;
+  width: clamp(16rem, 100%, 20rem);
 
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-
-  width: clamp(16rem, 100%, 20rem);
 }
 
 .userInputBox input,
-button {
-  padding: 0.25rem;
+.userInputBox button {
+  padding: 0.4rem 0.25rem;
+  border-radius: var(--border-radius);
+}
+
+.userInputBox input {
+  margin-bottom: 0.25rem;
 }
 
 .dataTable {
@@ -44,7 +97,12 @@ button {
 }
 
 .datumBox:not(:last-child) {
-  border-right: 1px solid #eee;
+  border-right: 1px solid var(--color-bg-accent);
+}
+
+.datumBox h2,
+.datumBox p {
+  font-size: 0.9rem;
 }
 
 .visuallyHidden {
@@ -59,4 +117,33 @@ button {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.caption {
+  font-size: 0.9rem;
+}
+
+@media screen and (min-width: 640px) {
+  body {
+    padding: 2rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    padding: 3rem;
+  }
+}
+
+.bg-fast {
+  /* not used rn */
+  background: none;
+}
+.bg-mid {
+  background-color: #6366f1;
+  color: #e0e7ff;
+}
+.bg-slow {
+  /* not used rn */
+  background: none;
 }
