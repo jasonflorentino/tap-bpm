@@ -163,20 +163,26 @@ button:disabled {
   background: none;
 }
 
+/* 
+we'll toggle 2 identical animations so
+it looks like we fire once on every event
+(one is being added while the other is being removed)
+*/
+
 @keyframes kf-pulse-1 {
   100% {
-    background-color: var(--green-400);
+    background-color: #4ade80ff; /* green 400 */
   }
   0% {
-    background-color: transparent;
+    background-color: #4ade8000;
   }
 }
 @keyframes kf-pulse-2 {
   100% {
-    background-color: var(--green-400);
+    background-color: #4ade80ff;
   }
   0% {
-    background-color: transparent;
+    background-color: #4ade8000;
   }
 }
 

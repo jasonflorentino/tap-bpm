@@ -1,109 +1,92 @@
 // ui elements
 
-const inputEl = document.getElementById("typeInput");
-const countEl = document.getElementById("taps");
-const tail1El = document.getElementById("tail1");
-const tail4El = document.getElementById("tail4");
-const tail8El = document.getElementById("tail8");
-const tail16El = document.getElementById("tail16");
-const tail32El = document.getElementById("tail32");
-const clearEl = document.getElementById("clear");
-
-// declare vals
-
-let prev = 0;
-let curr = 0;
-let count = 0;
-let average = 0;
-
-let timer = 0;
-
-const TAILS = {
-  1: {
-    i: 0,
-    vals: new Array(1).fill(0),
-    el: tail1El,
-    progEl: document.getElementById("progress1"),
-  },
-  4: {
-    i: 0,
-    vals: new Array(4).fill(0),
-    el: tail4El,
-    progEl: document.getElementById("progress4"),
-  },
-  8: {
-    i: 0,
-    vals: new Array(8).fill(0),
-    el: tail8El,
-    progEl: document.getElementById("progress8"),
-  },
-  16: {
-    i: 0,
-    vals: new Array(16).fill(0),
-    el: tail16El,
-    progEl: document.getElementById("progress16"),
-  },
-  32: {
-    i: 0,
-    vals: new Array(32).fill(0),
-    el: tail32El,
-    progEl: document.getElementById("progress32"),
-  },
+const ELS = {
+  input: document.getElementById("typeInput"),
+  count: document.getElementById("taps"),
+  reset: document.getElementById("reset"),
 };
+
+// tail data structures
+
+const TAILS = {};
+const TAIL_VALS = [1, 4, 8, 16, 32];
+TAIL_VALS.forEach((v) => {
+  TAILS[v] = newTail(v);
+});
+
+function newTail(n) {
+  return {
+    i: 0,
+    name: n,
+    vals: new Array(n).fill(0),
+    el: document.getElementById("tail" + n),
+    progEl: document.getElementById("progress" + n),
+  };
+}
+
+// script vals
+
+const RESET_TIMER_SEC = 30;
+
+let PREV = 0; // prev timestamp
+let CURR = 0; // latest timestamp
+let COUNT = 0; // number of timestamps captured
+let TIMER = 0; // timer id for reset countdown
 
 // event listeners
 
-window.addEventListener("load", () => {
-  countEl.classList.add("pulse1");
-});
-
-inputEl.addEventListener("input", (e) => {
+ELS.input.addEventListener("input", (e) => {
   e.preventDefault();
-  if (prev === 0) prev = curr = Date.now();
-  prev = curr;
+  if (PREV === 0) PREV = CURR = Date.now();
 
-  curr = Date.now();
-  count++;
-  if (count > 1) {
-    updateTails(curr - prev);
+  PREV = CURR;
+  CURR = Date.now();
+  COUNT++;
+  if (COUNT > 1) {
+    updateTails(CURR - PREV);
   }
-  countEl.innerText = count;
-  countEl.classList.toggle("pulse1");
-  countEl.classList.toggle("pulse2");
-  inputEl.value = "";
-  clearEl.disabled = false;
-  timerReset();
-  updateTailsProgress(count);
+  updateTailsProgress(COUNT);
+
+  ELS.count.innerText = COUNT;
+  ELS.count.classList.toggle("pulse1");
+  ELS.count.classList.toggle("pulse2");
+  ELS.input.value = "";
+  ELS.reset.disabled = false;
+  restartTheResetTimer();
 });
 
-clearEl.addEventListener("click", init);
+ELS.reset.addEventListener("click", reset);
 
 // fn defs
 
-function init() {
-  countEl.innerText = count = prev = curr = 0;
-  clearEl.disabled = true;
-  inputEl.focus();
+function reset() {
+  ELS.count.innerText = COUNT = PREV = CURR = 0;
+  ELS.reset.disabled = true;
+  ELS.input.focus();
   resetTails();
 }
 
-function updateTails(val) {
+function updateTails(bpm) {
   for (const k in TAILS) {
-    updateTail(k, val);
+    updateTailBpm(k, bpm);
   }
   updateTailColors(Object.values(TAILS));
 }
 
-function updateTail(id, val) {
+function updateTailBpm(id, bpm) {
   const tail = TAILS[id];
-  tail.vals[tail.i] = val;
+  tail.vals[tail.i] = bpm;
   tail.i++;
   tail.i = tail.i === tail.vals.length ? 0 : tail.i;
-  if (count < tail.vals.length) {
+  if (COUNT < tail.vals.length) {
     return;
   } else {
     tail.el.innerText = round(toBpm(arrAvg(tail.vals)));
   }
+}
+
+function getTailBpm(tail) {
+  return Number(tail.el.innerText || "0");
 }
 
 function updateTailColors(tails) {
@@ -152,8 +135,27 @@ function setSlow(el) {
   el.classList.remove("bg-fast");
 }
 
-function getTailBpm(tail) {
-  return Number(tail.el.innerText || "0");
+function updateTailProgress(count, prev, curr) {
+  const el = TAILS[String(curr)].progEl;
+  const p = round(((count - prev) / (curr - prev)) * 100);
+  el.style.width = p + "%";
+  if (p === 100) {
+    el.classList.add("progressFull");
+  }
+}
+
+function updateTailsProgress(c) {
+  if (c === 1) {
+    updateTailProgress(c, 0, 1);
+  } else if (c <= 4) {
+    updateTailProgress(c, 1, 4);
+  } else if (c <= 8) {
+    updateTailProgress(c, 4, 8);
+  } else if (c <= 16) {
+    updateTailProgress(c, 8, 16);
+  } else if (c <= 32) {
+    updateTailProgress(c, 16, 32);
+  }
 }
 
 function resetTails() {
@@ -183,30 +185,7 @@ function round(n) {
   return Math.round(n);
 }
 
-function timerReset() {
-  clearTimeout(timer);
-  timer = setTimeout(init, 1000 * 30);
-}
-
-function updateTailProgress(count, prev, curr) {
-  const el = TAILS[String(curr)].progEl;
-  const p = round(((count - prev) / (curr - prev)) * 100);
-  el.style.width = p + "%";
-  if (p === 100) {
-    el.classList.add("progressFull");
-  }
-}
-
-function updateTailsProgress(c) {
-  if (c === 1) {
-    updateTailProgress(c, 0, 1);
-  } else if (c <= 4) {
-    updateTailProgress(c, 1, 4);
-  } else if (c <= 8) {
-    updateTailProgress(c, 4, 8);
-  } else if (c <= 16) {
-    updateTailProgress(c, 8, 16);
-  } else if (c <= 32) {
-    updateTailProgress(c, 16, 32);
-  }
+function restartTheResetTimer() {
+  clearTimeout(TIMER);
+  TIMER = setTimeout(reset, 1000 * RESET_TIMER_SEC);
 }
