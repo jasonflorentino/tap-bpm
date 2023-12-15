@@ -23,30 +23,39 @@ const TAILS = {
     i: 0,
     vals: new Array(1).fill(0),
     el: tail1El,
+    progEl: document.getElementById("progress1"),
   },
   4: {
     i: 0,
     vals: new Array(4).fill(0),
     el: tail4El,
+    progEl: document.getElementById("progress4"),
   },
   8: {
     i: 0,
     vals: new Array(8).fill(0),
     el: tail8El,
+    progEl: document.getElementById("progress8"),
   },
   16: {
     i: 0,
     vals: new Array(16).fill(0),
     el: tail16El,
+    progEl: document.getElementById("progress16"),
   },
   32: {
     i: 0,
     vals: new Array(32).fill(0),
     el: tail32El,
+    progEl: document.getElementById("progress32"),
   },
 };
 
 // event listeners
+
+window.addEventListener("load", () => {
+  countEl.classList.add("pulse1");
+});
 
 inputEl.addEventListener("input", (e) => {
   e.preventDefault();
@@ -59,8 +68,12 @@ inputEl.addEventListener("input", (e) => {
     updateTails(curr - prev);
   }
   countEl.innerText = count;
+  countEl.classList.toggle("pulse1");
+  countEl.classList.toggle("pulse2");
   inputEl.value = "";
+  clearEl.disabled = false;
   timerReset();
+  updateTailsProgress(count);
 });
 
 clearEl.addEventListener("click", init);
@@ -69,6 +82,8 @@ clearEl.addEventListener("click", init);
 
 function init() {
   countEl.innerText = count = prev = curr = 0;
+  clearEl.disabled = true;
+  inputEl.focus();
   resetTails();
 }
 
@@ -152,6 +167,8 @@ function resetTail(id) {
   tail.vals.fill(0);
   tail.i = 0;
   tail.el.innerText = "";
+  tail.progEl.style.width = "0%";
+  tail.progEl.classList.remove("progressFull");
 }
 
 function toBpm(d) {
@@ -169,4 +186,27 @@ function round(n) {
 function timerReset() {
   clearTimeout(timer);
   timer = setTimeout(init, 1000 * 30);
+}
+
+function updateTailProgress(count, prev, curr) {
+  const el = TAILS[String(curr)].progEl;
+  const p = round(((count - prev) / (curr - prev)) * 100);
+  el.style.width = p + "%";
+  if (p === 100) {
+    el.classList.add("progressFull");
+  }
+}
+
+function updateTailsProgress(c) {
+  if (c === 1) {
+    updateTailProgress(c, 0, 1);
+  } else if (c <= 4) {
+    updateTailProgress(c, 1, 4);
+  } else if (c <= 8) {
+    updateTailProgress(c, 4, 8);
+  } else if (c <= 16) {
+    updateTailProgress(c, 8, 16);
+  } else if (c <= 32) {
+    updateTailProgress(c, 16, 32);
+  }
 }

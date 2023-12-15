@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>TAP BPM</title>
-    <meta name="description" content="" />
+    <meta
+      name="description"
+      content="Measure beats per minute (BPM) with keyboard presses."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
@@ -16,25 +19,30 @@
     <div class="dataTable">
       <div class="datumBox">
         <h2>Taps</h2>
-        <p id="taps">0</p>
+        <p id="taps" class="pulseBase pulse1">0</p>
       </div>
       <div class="datumBox">
+        <div id="progress1" class="progress"></div>
         <h2>01</h2>
         <p id="tail1"></p>
       </div>
       <div class="datumBox">
+        <div id="progress4" class="progress"></div>
         <h2>04</h2>
         <p id="tail4" class="bg-mid"></p>
       </div>
       <div class="datumBox">
+        <div id="progress8" class="progress"></div>
         <h2>08</h2>
         <p id="tail8" class="bg-mid"></p>
       </div>
       <div class="datumBox">
+        <div id="progress16" class="progress"></div>
         <h2>16</h2>
         <p id="tail16" class="bg-mid"></p>
       </div>
       <div class="datumBox">
+        <div id="progress32" class="progress"></div>
         <h2>32</h2>
         <p id="tail32" class="bg-mid"></p>
       </div>
@@ -45,10 +53,11 @@
         type="text"
         id="typeInput"
         name="typeInput"
+        autocomplete="off"
         value=""
         placeholder="Type here for BPM"
       />
-      <button id="clear">Clear</button>
+      <button id="clear" disabled>Reset</button>
     </div>
     <p class="caption">Resets after 30s of no input</p>
     <script src="script.js"></script>
