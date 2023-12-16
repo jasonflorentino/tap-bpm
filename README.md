@@ -32,6 +32,7 @@ The `main` branch of this repo is automatically deployed on GitHub Pages: https:
 
 - Highlight toggle?
 - Toggle to show fractional measurements (just one tenth)?
+- Provide clickable 'tap' interface instead of just keyboard?
 
 ## Contributing
 
