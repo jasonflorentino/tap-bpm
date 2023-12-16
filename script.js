@@ -152,7 +152,7 @@ function updateTailProgress(count, prev, curr) {
 function updateTailsProgress(c) {
   c = c % 33; // reset tail progress after all full
   if (c === 0) {
-    clearTailProgress();
+    resetTailsProgress();
   } else if (c === 1) {
     updateTailProgress(c, 0, 1);
   } else if (c <= 4) {
@@ -166,27 +166,37 @@ function updateTailsProgress(c) {
   }
 }
 
-function clearTailProgress() {
-  for (const k in TAILS) {
-    const el = TAILS[k].progEl;
-    el.style.width = "0%";
-    el.classList.remove("progressFull");
-  }
+function resetTailProgress(tail) {
+  tail.progEl.style.width = "0%";
+  tail.progEl.classList.remove("progressFull");
 }
 
-function resetTails() {
-  for (const k in TAILS) {
-    resetTail(k);
-  }
+function resetTailsProgress() {
+  forEachTail(resetTailProgress);
 }
 
-function resetTail(id) {
-  const tail = TAILS[id];
+function resetTail(tail) {
   tail.vals.fill(0);
   tail.i = 0;
   tail.el.innerText = "";
-  tail.progEl.style.width = "0%";
-  tail.progEl.classList.remove("progressFull");
+  resetTailProgress(tail);
+}
+
+function resetTails() {
+  forEachTail(resetTail);
+}
+
+function restartTheResetTimer() {
+  clearTimeout(TIMER);
+  TIMER = setTimeout(reset, 1000 * RESET_TIMER_SEC);
+}
+
+// utils
+
+function forEachTail(fn) {
+  for (const k in TAILS) {
+    fn(TAILS[k]);
+  }
 }
 
 function toBpm(d) {
@@ -199,9 +209,4 @@ function arrAvg(arr) {
 
 function round(n) {
   return Math.round(n);
-}
-
-function restartTheResetTimer() {
-  clearTimeout(TIMER);
-  TIMER = setTimeout(reset, 1000 * RESET_TIMER_SEC);
 }
