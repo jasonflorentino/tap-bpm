@@ -115,11 +115,11 @@ function updateTailHighlights(tails) {
     if (bpm === 0) {
       continue;
     } else if (bpm === modeBpm) {
-      setMid(t.el);
+      window.requestAnimationFrame(() => setMid(t.el));
     } else if (bpm > modeBpm) {
-      setFast(t.el);
+      window.requestAnimationFrame(() => setFast(t.el));
     } else if (bpm < modeBpm) {
-      setSlow(t.el);
+      window.requestAnimationFrame(() => setSlow(t.el));
     }
   }
 }
