@@ -77,10 +77,10 @@ function updateTailBpm(id, bpm) {
   const tail = TAILS[id];
   tail.vals[tail.i] = bpm;
   tail.i++;
-  tail.i = tail.i === tail.vals.length ? 0 : tail.i;
-  if (COUNT < tail.vals.length) {
-    return;
-  } else {
+  // handle pointer wrap around
+  tail.i = tail.i % tail.vals.length;
+  if (COUNT >= tail.vals.length) {
+    // only update UI text when we have a full array
     tail.el.innerText = round(toBpm(arrAvg(tail.vals)));
   }
 }
@@ -90,15 +90,20 @@ function getTailBpm(tail) {
 }
 
 function updateTailColors(tails) {
-  // find the most coment amongst our BPMs
+  // find the most common amongst our BPMs
+  // 1. count bpm occurrences
   const freqCounts = {};
-  tails.map(getTailBpm).forEach((bpm) => {
+  tails.forEach((t) => {
+    const bpm = getTailBpm(t);
     freqCounts[bpm] === undefined ? (freqCounts[bpm] = 1) : freqCounts[bpm]++;
   });
   const mostFreq = Math.max(...Object.values(freqCounts));
+  // 2. pick mode bpm
   let modeBpm = 0;
   if (mostFreq > 1) {
-    for (let bpm in freqCounts) {
+    // only set mode if we have at least
+    // 2 occurrences of the same BPM
+    for (const bpm in freqCounts) {
       if (freqCounts[bpm] === mostFreq) {
         modeBpm = Number(bpm);
       }
