@@ -70,7 +70,7 @@ function updateTails(bpm) {
   for (const k in TAILS) {
     updateTailBpm(k, bpm);
   }
-  updateTailColors(Object.values(TAILS));
+  updateTailHighlights(Object.values(TAILS));
 }
 
 function updateTailBpm(id, bpm) {
@@ -89,7 +89,7 @@ function getTailBpm(tail) {
   return Number(tail.el.innerText || "0");
 }
 
-function updateTailColors(tails) {
+function updateTailHighlights(tails) {
   // find the most common amongst our BPMs
   // 1. count bpm occurrences
   const freqCounts = {};
@@ -150,7 +150,10 @@ function updateTailProgress(count, prev, curr) {
 }
 
 function updateTailsProgress(c) {
-  if (c === 1) {
+  c = c % 33; // reset tail progress after all full
+  if (c === 0) {
+    clearTailProgress();
+  } else if (c === 1) {
     updateTailProgress(c, 0, 1);
   } else if (c <= 4) {
     updateTailProgress(c, 1, 4);
@@ -160,6 +163,14 @@ function updateTailsProgress(c) {
     updateTailProgress(c, 8, 16);
   } else if (c <= 32) {
     updateTailProgress(c, 16, 32);
+  }
+}
+
+function clearTailProgress() {
+  for (const k in TAILS) {
+    const el = TAILS[k].progEl;
+    el.style.width = "0%";
+    el.classList.remove("progressFull");
   }
 }
 
