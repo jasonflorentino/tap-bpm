@@ -217,7 +217,7 @@ it looks like we fire once on every event
   margin-top: 1rem;
   border-top: 1px dashed var(--color-heading);
   padding-top: 0.5rem;
-  width: 40rem;
+  max-width: 40rem;
   line-height: 2;
 }
 
