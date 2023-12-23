@@ -66,7 +66,7 @@ ELS.reset.addEventListener("click", reset);
 
 function reset() {
   clearInterval(TIMER);
-  ELS.resetTimeLeft.innerText = RESET_TIMER_SEC;
+  resetTheCountdown();
   ELS.count.innerText = COUNT = PREV = CURR = 0;
   ELS.reset.disabled = true;
   ELS.input.focus();
@@ -202,8 +202,15 @@ function countDown() {
   }
 }
 
+function resetTheCountdown() {
+  if (Number(ELS.resetTimeLeft.innerText) !== RESET_TIMER_SEC) {
+    ELS.resetTimeLeft.innerText = RESET_TIMER_SEC;
+  }
+}
+
 function restartTheResetTimer() {
   clearInterval(TIMER);
+  resetTheCountdown();
   TIMER = setInterval(countDown, 1000);
 }
 
