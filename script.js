@@ -17,7 +17,7 @@ TAIL_VALS.forEach((v) => {
 
 function newTail(n) {
   return {
-    i: 0,
+    i: 0, // idx of oldest value
     name: n,
     vals: new Array(n).fill(0),
     el: document.getElementById("tail" + n),
@@ -160,16 +160,14 @@ function updateTailsProgress(c) {
   c = c % 33; // reset tail progress after all full
   if (c === 0) {
     resetTailsProgress();
-  } else if (c === 1) {
-    updateTailProgress(c, 0, 1);
-  } else if (c <= 4) {
-    updateTailProgress(c, 1, 4);
-  } else if (c <= 8) {
-    updateTailProgress(c, 4, 8);
-  } else if (c <= 16) {
-    updateTailProgress(c, 8, 16);
-  } else if (c <= 32) {
-    updateTailProgress(c, 16, 32);
+  } else {
+    // progressively fill up the progress for each tail
+    for (let i = 0; i < TAIL_VALS.length; i++) {
+      if (c <= TAIL_VALS[i]) {
+        updateTailProgress(c, TAIL_VALS[i - 1] ?? 0, TAIL_VALS[i]);
+        break;
+      }
+    }
   }
 }
 
