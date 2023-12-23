@@ -4,6 +4,7 @@ const ELS = {
   input: document.getElementById("typeInput"),
   count: document.getElementById("taps"),
   reset: document.getElementById("reset"),
+  resetTimeLeft: document.getElementById("resetTimeLeft"),
 };
 
 // tail data structures
@@ -42,16 +43,20 @@ ELS.input.addEventListener("input", (e) => {
   PREV = CURR;
   CURR = Date.now();
   COUNT++;
+
+  window.requestAnimationFrame(() => {
+    ELS.count.innerText = COUNT;
+    ELS.count.classList.toggle("pulse1");
+    ELS.count.classList.toggle("pulse2");
+    ELS.input.value = "";
+    ELS.reset.disabled = false;
+  });
+
   if (COUNT > 1) {
     updateTails(CURR - PREV);
   }
-  updateTailsProgress(COUNT);
 
-  ELS.count.innerText = COUNT;
-  ELS.count.classList.toggle("pulse1");
-  ELS.count.classList.toggle("pulse2");
-  ELS.input.value = "";
-  ELS.reset.disabled = false;
+  updateTailsProgress(COUNT);
   restartTheResetTimer();
 });
 
@@ -60,6 +65,8 @@ ELS.reset.addEventListener("click", reset);
 // fn defs
 
 function reset() {
+  clearInterval(TIMER);
+  ELS.resetTimeLeft.innerText = RESET_TIMER_SEC;
   ELS.count.innerText = COUNT = PREV = CURR = 0;
   ELS.reset.disabled = true;
   ELS.input.focus();
@@ -186,9 +193,18 @@ function resetTails() {
   forEachTail(resetTail);
 }
 
+function countDown() {
+  const secondsLeft = Number(ELS.resetTimeLeft.innerText);
+  if (secondsLeft <= 0) {
+    reset();
+  } else {
+    ELS.resetTimeLeft.innerText = secondsLeft - 1;
+  }
+}
+
 function restartTheResetTimer() {
-  clearTimeout(TIMER);
-  TIMER = setTimeout(reset, 1000 * RESET_TIMER_SEC);
+  clearInterval(TIMER);
+  TIMER = setInterval(countDown, 1000);
 }
 
 // utils
