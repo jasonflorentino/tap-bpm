@@ -9,21 +9,21 @@ const ELS = {
 
 // tail data structures
 
-const TAILS = {};
 const TAIL_VALS = [1, 4, 8, 16, 32];
-TAIL_VALS.forEach((v) => {
-  TAILS[v] = newTail(v);
-});
+const TAIL_VALS_MAX = Math.max(...TAIL_VALS);
 
-function newTail(n) {
-  return {
-    i: 0, // idx of oldest value
-    name: n,
-    vals: new Array(n).fill(0),
-    el: document.getElementById("tail" + n),
-    progEl: document.getElementById("progress" + n),
-  };
-}
+/**
+ * @typedef {{
+ *   i: number;
+ *   name: number;
+ *   vals: number[];
+ *   el: HTMLElement | null;
+ *   progEl: HTMLElement | null;
+ * }} Tail
+ */
+
+/** @type {Object.<number, Tail>} */
+const TAILS = TAIL_VALS.map(toNewTail).reduce(toKeyedByVal, {});
 
 // script vals
 
@@ -157,7 +157,7 @@ function updateTailProgress(count, prev, curr) {
 }
 
 function updateTailsProgress(c) {
-  c = c % 33; // reset tail progress after all full
+  c = c % (TAIL_VALS_MAX + 1); // reset tail progress after all full
   if (c === 0) {
     resetTailsProgress();
   } else {
@@ -230,4 +230,30 @@ function arrAvg(arr) {
 
 function round(n) {
   return Math.round(n);
+}
+
+/**
+ * @param {number} n - tail size
+ * @returns {Tail}
+ */
+function toNewTail(n) {
+  return {
+    i: 0, // idx of oldest value
+    name: n,
+    vals: new Array(n).fill(0),
+    el: document.getElementById("tail" + n),
+    progEl: document.getElementById("progress" + n),
+  };
+}
+
+/**
+ * takes an accumulator obj and a tail and
+ * returns the object with the tail keyed by its 'name'
+ * @param {Object} acc accumulator obj
+ * @param {Tail} tail next tail
+ * @returns {Object.<number, Tail>}
+ */
+function toKeyedByVal(acc, tail) {
+  acc[tail.name] = tail;
+  return acc;
 }
