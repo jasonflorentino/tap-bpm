@@ -26,6 +26,7 @@ p {
   --color-bg-input: var(--gray-700);
   --color-border: var(--gray-600);
   --color-text: var(--green-100);
+  --color-text-dim: var(--green-200);
   --color-heading: var(--green-400);
   --color-button: var(--green-400);
   --color-button-disabled: var(--gray-500);
@@ -75,10 +76,15 @@ button {
   color: var(--color-bg);
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 button:disabled {
   border-color: var(--color-button-disabled);
   background-color: var(--color-button-disabled);
   color: var(--color-bg);
+  cursor: not-allowed;
 }
 
 /* classes */
@@ -213,8 +219,40 @@ it looks like we fire once on every event
   background-color: var(--color-heading);
 }
 
-.footer {
+.featureBox {
+  border-top: 1px dashed var(--color-heading);
   margin-top: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  max-width: 40rem;
+  line-height: 2;
+}
+
+.featureBox .row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.featureBox label {
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.featureBox button {
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.25rem;
+}
+.featureBox *[aria-pressed="true"] {
+  background-color: var(--color-button);
+  color: var(--color-bg);
+}
+.featureBox *[aria-pressed="false"] {
+  background-color: var(--color-bg);
+  color: var(--color-button);
+}
+
+.footer {
+  margin-top: 0.5rem;
   border-top: 1px dashed var(--color-heading);
   padding-top: 0.5rem;
   max-width: 40rem;

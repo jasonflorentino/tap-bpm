@@ -3,6 +3,9 @@
 const ELS = {
   input: document.getElementById("typeInput"),
   count: document.getElementById("taps"),
+  readoutHalf: document.getElementById("readoutHalf"),
+  readoutSing: document.getElementById("readoutSing"),
+  readoutDoub: document.getElementById("readoutDoub"),
   reset: document.getElementById("reset"),
   resetTimeLeft: document.getElementById("resetTimeLeft"),
 };
@@ -33,6 +36,7 @@ let PREV = 0; // prev timestamp
 let CURR = 0; // latest timestamp
 let COUNT = 0; // number of timestamps captured
 let TIMER = 0; // timer id for reset countdown
+let MULTIPLIER = 1; // modifies the output bpm: 1 | 2 | 0.5
 
 // event listeners
 
@@ -62,6 +66,10 @@ ELS.input.addEventListener("input", (e) => {
 
 ELS.reset.addEventListener("click", reset);
 
+ELS.readoutHalf.addEventListener("click", handleSetReadout);
+ELS.readoutSing.addEventListener("click", handleSetReadout);
+ELS.readoutDoub.addEventListener("click", handleSetReadout);
+
 // fn defs
 
 function reset() {
@@ -88,7 +96,7 @@ function updateTailBpm(id, bpm) {
   tail.i = tail.i % tail.vals.length;
   if (COUNT >= tail.vals.length) {
     // only update UI text when we have a full array
-    tail.el.innerText = round(toBpm(arrAvg(tail.vals)));
+    tail.el.innerText = round(addMultiplier(toBpm(arrAvg(tail.vals))));
   }
 }
 
@@ -161,7 +169,7 @@ function updateTailsProgress(c) {
   if (c === 0) {
     resetTailsProgress();
   } else {
-    // progressively fill up the progress for each tail
+    // progressively fill up each tail
     for (let i = 0; i < TAIL_VALS.length; i++) {
       if (c <= TAIL_VALS[i]) {
         updateTailProgress(c, TAIL_VALS[i - 1] ?? 0, TAIL_VALS[i]);
@@ -212,8 +220,36 @@ function restartTheResetTimer() {
   TIMER = setInterval(countDown, 1000);
 }
 
+function handleSetReadout(e) {
+  MULTIPLIER = Number(e.target.innerText);
+  // update ui state
+  const btns = [ELS.readoutHalf, ELS.readoutSing, ELS.readoutDoub];
+  for (const el of btns) {
+    if (el.id === e.target.id) {
+      el.setAttribute("aria-pressed", true);
+    } else {
+      el.setAttribute("aria-pressed", false);
+    }
+  }
+  // refocus tap input
+  ELS.input.focus();
+}
+
+function addMultiplier(bpm) {
+  return bpm * MULTIPLIER;
+}
+
 // utils
 
+/**
+ * @callback TailAction
+ * @param {Tail} tail
+ * @returns {void}
+ */
+
+/**
+ * @param {TailAction} fn
+ */
 function forEachTail(fn) {
   for (const k in TAILS) {
     fn(TAILS[k]);
