@@ -15,6 +15,7 @@ Recently I've been writing down the BPM of some songs I have on vinyl using a si
 - Shows progress to the next full beat-period
 - Pulses the count on tap for better visual feedback when the count isn't in the center of your vision. (bc you're focussing on the BPMs!)
 - Highlights the most common BPM value amongst fully measured periods to more easy discern what might be the best BPM measurement.
+- Set the readouts to display half, normal, or double the measured bpm.
 
 ## Developing
 
